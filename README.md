@@ -480,27 +480,181 @@ The program then prints a message to the standard output that states whether the
 Determine the following for the above program:<br>
 <br>
 
-**a) Identify the equivalence classes for the system<br>**
+### A. Equivalence classes for the system
 
-Equivalence Classes:<br>
-EC1: All sides are positive, real numbers.<br>
-EC2: One or more sides are negative or zero.<br>
-EC3: The sum of the lengths of any two sides is less than or equal to the length of the remaining side (impossible lengths).<br>
-EC4: The sum of the lengths of any two sides is greater than the length of the remaining side (possible lengths).<br>
+The possible equivalence classes and their corresponding conditions are as follows:
 
-<br>
+| Equivalence Class    | Neccessary Condition                                  |
+| -------------------- | ----------------------------------------------------- |
+| Invalid Triangle     | A > B+C or B > A+C or C > A+B                         |
+| Scalene Triangle     | A != B and B != C and C != A                          |
+| Isoceles Triangle    | either A == B or B == C or A == C                     |
+| Equilateral Triangle | A == B and B == C                                     |
+| Right-angle Triangle | A^2 + B^2 = C^2 or A^2 = B^2 + C^2 or B^2 + A^2 = C^2 |
+
+### B. Test Cases for Equivalence Classes
+
+Following are list of test cases each belonging to one of the defined Equivalence class
+
+| Test Case | Condition           | Expected Outcome     |
+| --------- | ------------------- | -------------------- |
+| 1         | A = 5, B = 5, C = 5 | Equilateral Triangle |
+| 2         | A = 3, B = 4, C = 5 | Right-angle Triangle |
+| 3         | A = 2, B = 2, C = 3 | Isosceles Triangle   |
+| 4         | A = 4, B = 4, C = 7 | Scalene Triangle     |
+| 5         | A = 1, B = 1, C = 3 | Invalid Triangle     |
+
+### C. Boundary Condition A + B > C (scalene triangle)
+
+Below is the list of possible corner cases looking like scalene triangle but are not
+
+| Test Case | Condition                 | Expected Outcome |
+| --------- | ------------------------- | ---------------- |
+| 1         | A = 2, B = 3, C = 5       | Invalid Triangle |
+| 2         | A = 1, B = 2, C = 3       | Invalid Triangle |
+| 3         | A = 1, B = 1, C = 2       | Invalid Triangle |
+| 4         | A = 0.1, B = 0.1, C = 0.3 | Invalid Triangle |
+| 5         | A = 1, B = 2, C = 2.9     | Scalene Triangle |
+
+### D. Boundary Condition A = C (isosceles triangle)
+
+Below is the list of possible corner cases looking like isosceles triangle but are not
+
+| Test Case | Condition                   | Expected Outcome   |
+| --------- | --------------------------- | ------------------ |
+| 1         | A = -4, B = 3, C = -4       | Invalid Triangle   |
+| 2         | A = 0, B = 2, C = 0         | Invalid Triangle   |
+| 3         | A = 1, B = 3, C = 1         | Invalid Triangle   |
+| 4         | A = 0.1, B = 0.3, C = 0.1   | Invalid Triangle   |
+| 5         | A = 0.15, B = 0.2, C = 0.15 | Isosceles Triangle |
+
+### E. Boundary Condition A = B = C (equilateral triangle)
+
+Below is the list of possible corner cases looking like isosceles triangle but are not
+
+| Test Case | Condition                 | Expected Outcome     |
+| --------- | ------------------------- | -------------------- |
+| 1         | A = -4, B = -4, C = -4    | Invalid Triangle     |
+| 2         | A = 0, B = 0, C = 0       | Invalid Triangle     |
+| 3         | A = 10, B = 10, C = 10    | Equilateral Triangle |
+| 4         | A = 0.1, B = 0.1, C = 0.1 | Equilateral Triangle |
+
+### F. Boundary Condition $A^2$ + $B^2$ = $C^2$ (right-angle triangle)
+
+Below is the list of possible corner cases looking like right-angle triangle but are not
+
+| Test Case | Condition                    | Expected Outcome      |
+| --------- | ---------------------------- | --------------------- |
+| 1         | A = 3, B = 4, C = 5          | Right Angled Triangle |
+| 2         | A = -4, B = -3, C = 5        | Invalid Triangle      |
+| 3         | A = -1, B = -1.414, C = 1.73 | Invalid Triangle      |
+| 3         | A = 1, B = 1.414, C = 1.73   | Right Angled Triangle |
+
+### G. Non-triangle Case
+
+Below is the list of possible Invalid Triangle cases
+
+| Test Case | Condition                    | Expected Outcome |
+| --------- | ---------------------------- | ---------------- |
+| 1         | A = 3, B = 4, C = 8          | Invalid Triangle |
+| 2         | A = -4, B = -3, C = 5        | Invalid Triangle |
+| 3         | A = -1, B = -1.414, C = 1.73 | Invalid Triangle |
+| 4         | A = 111, B = 1.414, C = 9.73 | Invalid Triangle |
+| 5         | A = 1, B = 53, C = 9.73      | Invalid Triangle |
+| 6         | A = 1, B = 1.414, C = -9.73  | Invalid Triangle |
+| 7         | A = 0, B = 0, C = 0          | Invalid Triangle |
+
+### H. Non-positive Input
+
+Below is the list of possible Invalid Triangle cases
+
+| Test Case | Condition        | Expected Outcome |
+| --------- | ---------------- | ---------------- |
+| 1         | a=-1, b=2, c=3   | Invalid Triangle |
+| 2         | a=-4, b=-5, c=-7 | Invalid Triangle |
+| 3         | a=1, b=-5, c=10  | Invalid Triangle |
+
+---
+
+# Section B
+1. Control Flow Graph (CFG):
+```
+        +-----+
+        | i = 1|
+        +-----+
+           |
+           |
+           v
++---------------+
+| i < p.size()   |
++---------------+
+     | true
+     |
+     v
++-----------------------+
+| ((Point)p.get(i)).y < ((Point)p.get(min)).y |
++-----------------------+
+    | true        | false
+    |             |
+    v             v
++---------------+    +---------------+
+| min = i       |    | i++           |
++---------------+    +---------------+
+     |                   |
+     |                   |
+     v                   v
++---------------+    +---------------+
+| i < p.size()   |    | return doStack(p) |
++---------------+    +---------------+
+     | false             |
+     |                   |
+     v                   v
++------------------------+
+| ((Point)p.get(i)).y == ((Point)p.get(min)).y |
++------------------------+
+        | true           | false
+        |                |
+        v                v
++------------------------+  +---------------+
+| ((Point)p.get(i)).x > ((Point)p.get(min)).x|
++------------------------+  +---------------+
+        | true           | false
+        |                |
+        v                v
++---------------+    +---------------+
+| min = i       |    | i++           |
++---------------+    +---------------+
+        |                |
+        |                |
+        v                v
++---------------+    +---------------+
+| i < p.size()   |    | return doStack(p) |
++---------------+    +---------------+
+        | false            |
+        |                  |
+        v                  v
++--------------------------+
+| return doStack(p)         |
++--------------------------+
+```
 
 
-**b) Identify test cases to cover the identified equivalence classes. Also, explicitly mention which test case would cover which equivalence class.<br>**
-(Hint: you must need to be ensure that the identified set of test cases cover all identified equivalence classes)<br>
+2. Test sets for each coverage criterion:
 
-Test cases:<br>
-TC1 (EC1): A=3, B=4, C=5 (right-angled triangle)<br>
-TC2 (EC1): A=5, B=5, C=5 (equilateral triangle)<br>
-TC3 (EC1): A=5, B=6, C=7 (scalene triangle)<br>
-TC4 (EC1): A=5, B=5, C=7 (isosceles triangle)<br>
-TC5 (EC2): A=-2, B=4, C=5 (invalid input)<br>
-TC6 (EC2): A=0, B=4, C=5 (invalid input)<br>
+a. Statement Coverage:
+- Test 1: p = {new Point(0, 0), new Point(1, 1)}
+- Test 2: p = {new Point(0, 0), new Point(1, 0), new Point(2, 0)}
 
-<br>
+b. Branch Coverage:
+- Test 1: p = {new Point(0, 0), new Point(1, 1)}
+- Test 2: p = {new Point(0, 0), new Point(1, 0), new Point(2, 0)}
+- Test 3: p = {new Point(0, 0), new Point(1, 0), new Point(1, 1)}
+
+c. Basic Condition Coverage:
+- Test 1: p = {new Point(0, 0), new Point(1, 1)}
+- Test 2: p = {new Point(0, 0), new Point(1, 0), new Point(2, 0)}
+- Test 3: p = {new Point(0, 0), new Point(1, 0), new Point(1, 1)}
+- Test 4: p = {new Point(0, 0), new Point(1, 0), new Point(0, 1)}
+- Test 5: p = {new Point(0, 0), new Point(0, 1), new Point(1, 1)}
+```
 
